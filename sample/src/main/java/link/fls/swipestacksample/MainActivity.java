@@ -23,9 +23,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +39,7 @@ import link.fls.swipestack.SwipeStack;
 public class MainActivity extends AppCompatActivity implements SwipeStack.SwipeStackListener, View.OnClickListener {
 
     private View root;
+    private Toolbar toolbar;
     private Button mButtonLeft, mButtonRight;
     private FloatingActionButton mFab;
 
@@ -53,11 +53,30 @@ public class MainActivity extends AppCompatActivity implements SwipeStack.SwipeS
         setContentView(R.layout.activity_main);
 
         root = findViewById(R.id.root);
+        toolbar = findViewById(R.id.toolbar);
         mSwipeStack = findViewById(R.id.swipeStack);
         mButtonLeft = findViewById(R.id.buttonSwipeLeft);
         mButtonRight = findViewById(R.id.buttonSwipeRight);
         mFab = findViewById(R.id.fabAdd);
 
+        toolbar.inflateMenu(R.menu.main);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menuReset:
+                        mSwipeStack.resetStack();
+                        Snackbar.make(root, R.string.stack_reset, Snackbar.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.menuGitHub:
+                        Intent browserIntent = new Intent(
+                                Intent.ACTION_VIEW, Uri.parse("https://github.com/flschweiger/SwipeStack"));
+                        startActivity(browserIntent);
+                        return true;
+                }
+                return false;
+            }
+        });
         mButtonLeft.setOnClickListener(this);
         mButtonRight.setOnClickListener(this);
         mFab.setOnClickListener(this);
@@ -86,31 +105,6 @@ public class MainActivity extends AppCompatActivity implements SwipeStack.SwipeS
             mData.add(getString(R.string.dummy_fab));
             mAdapter.notifyDataSetChanged();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.menuReset:
-                mSwipeStack.resetStack();
-                Snackbar.make(mFab, R.string.stack_reset, Snackbar.LENGTH_SHORT).show();
-                return true;
-            case R.id.menuGitHub:
-                Intent browserIntent = new Intent(
-                        Intent.ACTION_VIEW, Uri.parse("https://github.com/flschweiger/SwipeStack"));
-                startActivity(browserIntent);
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
