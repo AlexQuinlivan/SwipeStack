@@ -18,15 +18,14 @@ package link.fls.swipestack;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.database.DataSetObserver;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.FrameLayout;
 
 import java.util.Random;
@@ -48,7 +47,7 @@ public class SwipeStack extends ViewGroup {
     private static final String KEY_SUPER_STATE = "superState";
     private static final String KEY_CURRENT_INDEX = "currentIndex";
 
-    private Adapter mAdapter;
+    private RecyclerView.Adapter mAdapter;
     private Random mRandom;
 
     private int mAllowedSwipeDirections;
@@ -65,7 +64,7 @@ public class SwipeStack extends ViewGroup {
 
     private View mTopView;
     private SwipeHelper mSwipeHelper;
-    private DataSetObserver mDataObserver;
+    private RecyclerView.AdapterDataObserver mDataObserver;
     private SwipeStackListener mListener;
     private SwipeProgressListener mProgressListener;
 
@@ -125,7 +124,7 @@ public class SwipeStack extends ViewGroup {
         mSwipeHelper.setRotation(mSwipeRotation);
         mSwipeHelper.setOpacityEnd(mSwipeOpacity);
 
-        mDataObserver = new DataSetObserver() {
+        mDataObserver = new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
                 super.onChanged();
@@ -157,14 +156,14 @@ public class SwipeStack extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
 
-        if (mAdapter == null || mAdapter.isEmpty()) {
+        if (mAdapter == null || mAdapter.getItemCount() == 0) {
             mCurrentViewIndex = 0;
             removeAllViewsInLayout();
             return;
         }
 
         for (int x = getChildCount();
-             x < mNumberOfStackedViews && mCurrentViewIndex < mAdapter.getCount();
+             x < mNumberOfStackedViews && mCurrentViewIndex < mAdapter.getItemCount();
              x++) {
             addNextView();
         }
@@ -175,8 +174,10 @@ public class SwipeStack extends ViewGroup {
     }
 
     private void addNextView() {
-        if (mCurrentViewIndex < mAdapter.getCount()) {
-            View bottomView = mAdapter.getView(mCurrentViewIndex, null, this);
+        if (mCurrentViewIndex < mAdapter.getItemCount()) {
+            RecyclerView.ViewHolder viewHolder = mAdapter.onCreateViewHolder(this, 0);
+            mAdapter.onBindViewHolder(viewHolder, mCurrentViewIndex);
+            View bottomView = viewHolder.itemView;
             bottomView.setTag(R.id.new_view, true);
 
             if (!mDisableHwAcceleration) {
@@ -320,26 +321,16 @@ public class SwipeStack extends ViewGroup {
     }
 
     /**
-     * Returns the adapter currently in use in this SwipeStack.
-     *
-     * @return The adapter currently used to display data in this SwipeStack.
-     */
-    public Adapter getAdapter() {
-        return mAdapter;
-    }
-
-    /**
      * Sets the data behind this SwipeView.
      *
      * @param adapter The Adapter which is responsible for maintaining the
      *                data backing this list and for producing a view to represent an
      *                item in that data set.
-     * @see #getAdapter()
      */
-    public void setAdapter(Adapter adapter) {
-        if (mAdapter != null) mAdapter.unregisterDataSetObserver(mDataObserver);
+    public void setAdapter(RecyclerView.Adapter adapter) {
+        if (mAdapter != null) mAdapter.unregisterAdapterDataObserver(mDataObserver);
         mAdapter = adapter;
-        mAdapter.registerDataSetObserver(mDataObserver);
+        mAdapter.registerAdapterDataObserver(mDataObserver);
     }
 
     /**

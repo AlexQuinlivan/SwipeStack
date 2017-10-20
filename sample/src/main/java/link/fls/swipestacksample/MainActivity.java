@@ -22,15 +22,15 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +39,7 @@ import link.fls.swipestack.SwipeStack;
 
 public class MainActivity extends AppCompatActivity implements SwipeStack.SwipeStackListener, View.OnClickListener {
 
+    private View root;
     private Button mButtonLeft, mButtonRight;
     private FloatingActionButton mFab;
 
@@ -51,10 +52,11 @@ public class MainActivity extends AppCompatActivity implements SwipeStack.SwipeS
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSwipeStack = (SwipeStack) findViewById(R.id.swipeStack);
-        mButtonLeft = (Button) findViewById(R.id.buttonSwipeLeft);
-        mButtonRight = (Button) findViewById(R.id.buttonSwipeRight);
-        mFab = (FloatingActionButton) findViewById(R.id.fabAdd);
+        root = findViewById(R.id.root);
+        mSwipeStack = findViewById(R.id.swipeStack);
+        mButtonLeft = findViewById(R.id.buttonSwipeLeft);
+        mButtonRight = findViewById(R.id.buttonSwipeRight);
+        mFab = findViewById(R.id.fabAdd);
 
         mButtonLeft.setOnClickListener(this);
         mButtonRight.setOnClickListener(this);
@@ -114,23 +116,23 @@ public class MainActivity extends AppCompatActivity implements SwipeStack.SwipeS
     @Override
     public void onViewSwipedToRight(int position) {
         String swipedElement = mAdapter.getItem(position);
-        Toast.makeText(this, getString(R.string.view_swiped_right, swipedElement),
-                Toast.LENGTH_SHORT).show();
+        Snackbar.make(root, getString(R.string.view_swiped_right, swipedElement),
+                Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void onViewSwipedToLeft(int position) {
         String swipedElement = mAdapter.getItem(position);
-        Toast.makeText(this, getString(R.string.view_swiped_left, swipedElement),
-                Toast.LENGTH_SHORT).show();
+        Snackbar.make(root, getString(R.string.view_swiped_left, swipedElement),
+                Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void onStackEmpty() {
-        Toast.makeText(this, R.string.stack_empty, Toast.LENGTH_SHORT).show();
+        Snackbar.make(root, R.string.stack_empty, Snackbar.LENGTH_SHORT).show();
     }
 
-    public class SwipeStackAdapter extends BaseAdapter {
+    public static class SwipeStackAdapter extends RecyclerView.Adapter<CardViewHolder> {
 
         private List<String> mData;
 
@@ -139,30 +141,42 @@ public class MainActivity extends AppCompatActivity implements SwipeStack.SwipeS
         }
 
         @Override
-        public int getCount() {
+        public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return CardViewHolder.inflate(parent);
+        }
+
+        @Override
+        public void onBindViewHolder(CardViewHolder holder, int position) {
+            holder.bind(mData.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
             return mData.size();
         }
 
-        @Override
         public String getItem(int position) {
             return mData.get(position);
         }
+    }
 
-        @Override
-        public long getItemId(int position) {
-            return position;
+    public static class CardViewHolder extends RecyclerView.ViewHolder {
+
+        public static CardViewHolder inflate(ViewGroup parent) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.card, parent, false);
+            return new CardViewHolder(view);
         }
 
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.card, parent, false);
-            }
+        TextView textView;
 
-            TextView textViewCard = (TextView) convertView.findViewById(R.id.textViewCard);
-            textViewCard.setText(mData.get(position));
+        CardViewHolder(View view) {
+            super(view);
+            textView = view.findViewById(R.id.textViewCard);
+        }
 
-            return convertView;
+        public void bind(String message) {
+            textView.setText(message);
         }
     }
 }

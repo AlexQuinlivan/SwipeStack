@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
@@ -43,7 +44,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/buttonSwipeLeft"
         android:padding="@dimen/padding_swipestack"
-        app:stack_rotation="10"
+        app:stack_rotation="0"
         app:stack_size="3"/>
 
     <android.support.design.widget.CoordinatorLayout

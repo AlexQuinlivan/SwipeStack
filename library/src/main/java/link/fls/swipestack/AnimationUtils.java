@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package link.fls.swipestack.util;
+package link.fls.swipestack;
 
 import android.animation.Animator;
 
-public class AnimationUtils {
+class AnimationUtils {
 
     public static abstract class AnimationEndListener implements Animator.AnimatorListener {
         @Override

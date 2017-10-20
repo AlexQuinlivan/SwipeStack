@@ -21,9 +21,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 
-import link.fls.swipestack.util.AnimationUtils;
-
-public class SwipeHelper implements View.OnTouchListener {
+class SwipeHelper implements View.OnTouchListener {
 
     private final SwipeStack mSwipeStack;
     private View mObservedView;
