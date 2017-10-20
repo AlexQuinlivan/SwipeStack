@@ -128,10 +128,10 @@ public class MainActivity extends AppCompatActivity implements SwipeStack.SwipeS
 
     public static class SwipeStackAdapter extends RecyclerView.Adapter<CardViewHolder> {
 
-        private List<String> mData;
+        private List<String> data;
 
         public SwipeStackAdapter(List<String> data) {
-            this.mData = data;
+            this.data = data;
         }
 
         @Override
@@ -141,16 +141,16 @@ public class MainActivity extends AppCompatActivity implements SwipeStack.SwipeS
 
         @Override
         public void onBindViewHolder(CardViewHolder holder, int position) {
-            holder.bind(mData.get(position));
+            holder.bind(data.get(position));
         }
 
         @Override
         public int getItemCount() {
-            return mData.size();
+            return data.size();
         }
 
         public String getItem(int position) {
-            return mData.get(position);
+            return data.get(position);
         }
     }
 

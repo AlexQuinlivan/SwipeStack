@@ -1,22 +1,11 @@
 # SwipeStack
 A simple, customizable and easy to use swipeable view stack for Android.
 
-[![Download](https://api.bintray.com/packages/flschweiger/maven/swipestack/images/download.svg) ](https://bintray.com/flschweiger/maven/swipestack/_latestVersion) 
-[![License Apache](https://img.shields.io/badge/license-Apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-SwipeStack-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/3079)
+[![Build Status](https://travis-ci.org/Jawnnypoo/SwipeStack.svg?branch=master)](https://travis-ci.org/Jawnnypoo/SwipeStack) [![](https://jitpack.io/v/Jawnnypoo/SwipeStack.svg)](https://jitpack.io/#Jawnnypoo/SwipeStack)
 
-![Demo screen 1](https://raw.githubusercontent.com/flschweiger/SwipeStack/master/art/screen1.png)
-![Demo animation](https://raw.githubusercontent.com/flschweiger/SwipeStack/master/art/demo.gif)
-![Demo screen 2](https://raw.githubusercontent.com/flschweiger/SwipeStack/master/art/screen2.png)  
-
-## QuickStart ##
-### Include the Gradle dependency ###
-
-```java
-dependencies {
-    compile 'link.fls:swipestack:0.3.0'
-}
-```
+![Demo screen 1](https://raw.githubusercontent.com/Jawnnypoo/SwipeStack/master/art/screen1.png)
+![Demo animation](https://raw.githubusercontent.com/Jawnnypoo/SwipeStack/master/art/demo.gif)
+![Demo screen 2](https://raw.githubusercontent.com/Jawnnypoo/SwipeStack/master/art/screen2.png)
 
 ### Use it in your layout file ###
 1. Use the `link.fls.swipestack.SwipeStack` view in your XML layout file 
@@ -49,36 +38,31 @@ Create an adapter which holds the data and creates the views for the stack.
 *Example:*
 
 ```java
-public class SwipeStackAdapter extends BaseAdapter {
+public static class SwipeStackAdapter extends RecyclerView.Adapter<CardViewHolder> {
 
-    private List<String> mData;
+    private List<String> data;
 
     public SwipeStackAdapter(List<String> data) {
-        this.mData = data;
+        this.data = data;
     }
 
     @Override
-    public int getCount() {
-        return mData.size();
+    public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return CardViewHolder.inflate(parent);
     }
 
     @Override
+    public void onBindViewHolder(CardViewHolder holder, int position) {
+        holder.bind(data.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        return data.size();
+    }
+
     public String getItem(int position) {
-        return mData.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        convertView = getLayoutInflater().inflate(R.layout.card, parent, false);
-        TextView textViewCard = (TextView) convertView.findViewById(R.id.textViewCard);
-        textViewCard.setText(mData.get(position));
-
-        return convertView;
+        return data.get(position);
     }
 }
 ```
@@ -126,7 +110,7 @@ Currently SwipeStack implements the following callbacks:
 `disable_hw_acceleration` set to `true` disables hardware acceleration. *Default: false*
 
 ## Copyright Notice ##
-``` 
+```
 Copyright (C) 2016 Frederik Schweiger
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -141,3 +125,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
  ```
+
+
+License
+--------
+
+    Copyright 2017 John Carlson
+    Copyright 2016 Frederik Schweiger
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
