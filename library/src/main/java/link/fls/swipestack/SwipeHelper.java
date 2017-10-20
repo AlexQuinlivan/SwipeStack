@@ -37,7 +37,7 @@ class SwipeHelper implements View.OnTouchListener {
     private float mOpacityEnd = SwipeStack.DEFAULT_SWIPE_OPACITY;
     private int mAnimationDuration = SwipeStack.DEFAULT_ANIMATION_DURATION;
 
-    public SwipeHelper(SwipeStack swipeStack) {
+    SwipeHelper(SwipeStack swipeStack) {
         mSwipeStack = swipeStack;
     }
 
@@ -69,7 +69,9 @@ class SwipeHelper implements View.OnTouchListener {
                 float newY = mObservedView.getY() + dy;
 
                 mObservedView.setX(newX);
-                mObservedView.setY(newY);
+                if (mSwipeStack.mAllowVerticalMovement) {
+                    mObservedView.setY(newY);
+                }
 
                 float dragDistanceX = newX - mInitialX;
                 float swipeProgress = Math.min(Math.max(

@@ -61,6 +61,7 @@ public class SwipeStack extends ViewGroup {
     private float mScaleFactor;
     private boolean mDisableHwAcceleration;
     private boolean mIsFirstLayout = true;
+    boolean mAllowVerticalMovement = true;
 
     private View mTopView;
     private SwipeHelper mSwipeHelper;
@@ -108,6 +109,9 @@ public class SwipeStack extends ViewGroup {
             mDisableHwAcceleration =
                     attrs.getBoolean(R.styleable.SwipeStack_disable_hw_acceleration,
                             DEFAULT_DISABLE_HW_ACCELERATION);
+            mAllowVerticalMovement =
+                    attrs.getBoolean(R.styleable.SwipeStack_allow_vertical,
+                            true);
         } finally {
             attrs.recycle();
         }
@@ -350,6 +354,10 @@ public class SwipeStack extends ViewGroup {
      */
     public void setAllowedSwipeDirections(int directions) {
         mAllowedSwipeDirections = directions;
+    }
+
+    public void setAllowVerticalMovement(boolean allowVerticalMovement) {
+        this.mAllowVerticalMovement = allowVerticalMovement;
     }
 
     /**
