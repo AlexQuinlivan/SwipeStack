@@ -61,7 +61,7 @@ public class SwipeStack extends ViewGroup {
     private float mScaleFactor;
     private boolean mDisableHwAcceleration;
     private boolean mIsFirstLayout = true;
-    boolean mAllowVerticalMovement = true;
+    private boolean mAllowVerticalMovement = true;
 
     private View mTopView;
     private SwipeHelper mSwipeHelper;
@@ -358,6 +358,10 @@ public class SwipeStack extends ViewGroup {
 
     public void setAllowVerticalMovement(boolean allowVerticalMovement) {
         this.mAllowVerticalMovement = allowVerticalMovement;
+    }
+
+    public boolean isAllowVerticalMovement() {
+        return mAllowVerticalMovement;
     }
 
     /**

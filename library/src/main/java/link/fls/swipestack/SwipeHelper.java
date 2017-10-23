@@ -69,7 +69,7 @@ class SwipeHelper implements View.OnTouchListener {
                 float newY = mObservedView.getY() + dy;
 
                 mObservedView.setX(newX);
-                if (mSwipeStack.mAllowVerticalMovement) {
+                if (mSwipeStack.isAllowVerticalMovement()) {
                     mObservedView.setY(newY);
                 }
 
@@ -169,7 +169,7 @@ class SwipeHelper implements View.OnTouchListener {
                 });
     }
 
-    public void registerObservedView(View view, float initialX, float initialY) {
+    void registerObservedView(View view, float initialX, float initialY) {
         if (view == null) return;
         mObservedView = view;
         mObservedView.setOnTouchListener(this);
@@ -178,7 +178,7 @@ class SwipeHelper implements View.OnTouchListener {
         mListenForTouchEvents = true;
     }
 
-    public void unregisterObservedView() {
+    void unregisterObservedView() {
         if (mObservedView != null) {
             mObservedView.setOnTouchListener(null);
         }
@@ -186,24 +186,23 @@ class SwipeHelper implements View.OnTouchListener {
         mListenForTouchEvents = false;
     }
 
-    public void setAnimationDuration(int duration) {
+    void setAnimationDuration(int duration) {
         mAnimationDuration = duration;
     }
 
-    public void setRotation(float rotation) {
+    void setRotation(float rotation) {
         mRotateDegrees = rotation;
     }
 
-    public void setOpacityEnd(float alpha) {
+    void setOpacityEnd(float alpha) {
         mOpacityEnd = alpha;
     }
 
-    public void swipeViewToLeft() {
+    void swipeViewToLeft() {
         swipeViewToLeft(mAnimationDuration);
     }
 
-    public void swipeViewToRight() {
+    void swipeViewToRight() {
         swipeViewToRight(mAnimationDuration);
     }
-
 }
