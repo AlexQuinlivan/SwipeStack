@@ -321,7 +321,7 @@ public class SwipeStack extends ViewGroup {
      * @return The current position.
      */
     public int getCurrentPosition() {
-        return Math.min(getChildCount(), mCurrentViewIndex - getChildCount());
+        return mCurrentViewIndex - getChildCount();
     }
 
     /**
