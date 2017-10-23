@@ -305,13 +305,13 @@ public class SwipeStack extends ViewGroup {
         if (mProgressListener != null) mProgressListener.onSwipeEnd(getCurrentPosition());
     }
 
-    public void onViewSwipedToLeft() {
-        if (mListener != null) mListener.onViewSwipedToLeft(getCurrentPosition());
+    void onViewSwipedToLeft(boolean notifyListener) {
+        if (mListener != null && notifyListener) mListener.onViewSwipedToLeft(getCurrentPosition());
         removeTopView();
     }
 
-    public void onViewSwipedToRight() {
-        if (mListener != null) mListener.onViewSwipedToRight(getCurrentPosition());
+    void onViewSwipedToRight(boolean notifyListener) {
+        if (mListener != null && notifyListener) mListener.onViewSwipedToRight(getCurrentPosition());
         removeTopView();
     }
 
@@ -321,7 +321,7 @@ public class SwipeStack extends ViewGroup {
      * @return The current position.
      */
     public int getCurrentPosition() {
-        return mCurrentViewIndex - getChildCount();
+        return Math.min(getChildCount(), mCurrentViewIndex - getChildCount());
     }
 
     /**
@@ -396,17 +396,17 @@ public class SwipeStack extends ViewGroup {
     /**
      * Programmatically dismiss the top view to the right.
      */
-    public void swipeTopViewToRight() {
+    public void swipeTopViewToRight(boolean notifyListener) {
         if (getChildCount() == 0) return;
-        mSwipeHelper.swipeViewToRight();
+        mSwipeHelper.swipeViewToRight(notifyListener);
     }
 
     /**
      * Programmatically dismiss the top view to the left.
      */
-    public void swipeTopViewToLeft() {
+    public void swipeTopViewToLeft(boolean notifyListener) {
         if (getChildCount() == 0) return;
-        mSwipeHelper.swipeViewToLeft();
+        mSwipeHelper.swipeViewToLeft(notifyListener);
     }
 
     /**

@@ -115,10 +115,10 @@ class SwipeHelper implements View.OnTouchListener {
 
         if (viewCenterHorizontal < parentFirstThird &&
                 mSwipeStack.getAllowedSwipeDirections() != SwipeStack.SWIPE_DIRECTION_ONLY_RIGHT) {
-            swipeViewToLeft(mAnimationDuration / 2);
+            swipeViewToLeft(mAnimationDuration / 2, true);
         } else if (viewCenterHorizontal > parentLastThird &&
                 mSwipeStack.getAllowedSwipeDirections() != SwipeStack.SWIPE_DIRECTION_ONLY_LEFT) {
-            swipeViewToRight(mAnimationDuration / 2);
+            swipeViewToRight(mAnimationDuration / 2, true);
         } else {
             resetViewPosition();
         }
@@ -135,7 +135,7 @@ class SwipeHelper implements View.OnTouchListener {
                 .setListener(null);
     }
 
-    private void swipeViewToLeft(int duration) {
+    private void swipeViewToLeft(int duration, final boolean notifyListener) {
         if (!mListenForTouchEvents) return;
         mListenForTouchEvents = false;
         mObservedView.animate().cancel();
@@ -147,12 +147,12 @@ class SwipeHelper implements View.OnTouchListener {
                 .setListener(new AnimationUtils.AnimationEndListener() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        mSwipeStack.onViewSwipedToLeft();
+                        mSwipeStack.onViewSwipedToLeft(notifyListener);
                     }
                 });
     }
 
-    private void swipeViewToRight(int duration) {
+    private void swipeViewToRight(int duration, final boolean notifyListener) {
         if (!mListenForTouchEvents) return;
         mListenForTouchEvents = false;
         mObservedView.animate().cancel();
@@ -164,7 +164,7 @@ class SwipeHelper implements View.OnTouchListener {
                 .setListener(new AnimationUtils.AnimationEndListener() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        mSwipeStack.onViewSwipedToRight();
+                        mSwipeStack.onViewSwipedToRight(notifyListener);
                     }
                 });
     }
@@ -198,11 +198,11 @@ class SwipeHelper implements View.OnTouchListener {
         mOpacityEnd = alpha;
     }
 
-    void swipeViewToLeft() {
-        swipeViewToLeft(mAnimationDuration);
+    void swipeViewToLeft(boolean notifyListener) {
+        swipeViewToLeft(mAnimationDuration, notifyListener);
     }
 
-    void swipeViewToRight() {
-        swipeViewToRight(mAnimationDuration);
+    void swipeViewToRight(boolean notifyListener) {
+        swipeViewToRight(mAnimationDuration, notifyListener);
     }
 }

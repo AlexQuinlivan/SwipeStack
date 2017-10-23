@@ -98,9 +98,9 @@ public class MainActivity extends AppCompatActivity implements SwipeStack.SwipeS
     @Override
     public void onClick(View v) {
         if (v.equals(mButtonLeft)) {
-            mSwipeStack.swipeTopViewToLeft();
+            mSwipeStack.swipeTopViewToLeft(true);
         } else if (v.equals(mButtonRight)) {
-            mSwipeStack.swipeTopViewToRight();
+            mSwipeStack.swipeTopViewToRight(true);
         } else if (v.equals(mFab)) {
             mData.add(getString(R.string.dummy_fab));
             mAdapter.notifyDataSetChanged();
