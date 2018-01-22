@@ -109,10 +109,10 @@ class SwipeHelper implements View.OnTouchListener {
 
         if (viewCenterHorizontal < parentFirstThird &&
                 mSwipeStack.getAllowedSwipeDirections() != SwipeStack.SWIPE_DIRECTION_ONLY_RIGHT) {
-            swipeViewToLeft(mAnimationDuration / 2, true);
+            swipeViewToLeft(mAnimationDuration, true);
         } else if (viewCenterHorizontal > parentLastThird &&
                 mSwipeStack.getAllowedSwipeDirections() != SwipeStack.SWIPE_DIRECTION_ONLY_LEFT) {
-            swipeViewToRight(mAnimationDuration / 2, true);
+            swipeViewToRight(mAnimationDuration, true);
         } else {
             resetViewPosition();
         }
