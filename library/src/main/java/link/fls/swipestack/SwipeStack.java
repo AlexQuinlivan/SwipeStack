@@ -26,6 +26,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 
 import java.util.Random;
@@ -246,6 +247,12 @@ public class SwipeStack extends ViewGroup {
                 mSwipeHelper.unregisterObservedView();
                 mTopView = childView;
                 mSwipeHelper.registerObservedView(mTopView, newPositionX, newPositionY);
+
+                mTopView.animate()
+                        .rotation(0)
+                        .setDuration(300)
+                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                        .start();
             }
 
             if (!mIsFirstLayout) {
